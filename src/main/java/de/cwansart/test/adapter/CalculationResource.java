@@ -21,8 +21,8 @@ public class CalculationResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getCalculationResult() {
-        String message = String.format("The Calculation took %d seconds.", this.service.calculate());
+    public Response getCalculationResult(CalculationRequestDTO request) {
+        String message = String.format("The Calculation took %d seconds.", this.service.calculate(request.getCalculationMode()));
         CalculationResponseDTO response = new CalculationResponseDTO(message);
         return Response.ok(response).build();
     }
