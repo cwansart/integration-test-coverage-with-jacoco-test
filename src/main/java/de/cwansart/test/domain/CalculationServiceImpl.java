@@ -7,18 +7,25 @@ import java.util.concurrent.TimeUnit;
 @ApplicationScoped
 public class CalculationServiceImpl implements CalculationService {
 
-    private final static int MIN_TIMEOUT = 1;
+    private static final int MIN_TIMEOUT = 1;
 
-    private final static int MAX_TIMEOUT = 5;
+    private static final int MAX_TIMEOUT = 5;
 
     public int calculate(CalculationMode calculationMode) {
-        int calculatedMinTimeout = calculationMode == CalculationMode.NORMAL ? MIN_TIMEOUT : MIN_TIMEOUT + 3;
-        int sleepTime = ThreadLocalRandom.current().nextInt(calculatedMinTimeout, MAX_TIMEOUT + 1);
+        int calculatedMinTimeout;
+        if (calculationMode == CalculationMode.NORMAL) {
+            System.out.println("Called normal calculation mode");
+            calculatedMinTimeout = MIN_TIMEOUT;
+        } else {
+            System.out.println("Called longer calculation mode.");
+            calculatedMinTimeout = MIN_TIMEOUT + 3;
+        }
 
+        int sleepTime = ThreadLocalRandom.current().nextInt(calculatedMinTimeout, MAX_TIMEOUT + 1);
         try {
             TimeUnit.SECONDS.sleep(sleepTime);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.err.println("Sleep failed: " + e.getMessage());
         }
 
         return sleepTime;
